@@ -17,17 +17,22 @@ function handler (req, res) {
   });
 }
 
-io.on('connection', function (socket) {
-    var msgArr = null
-    socket.emit('news', { hello: 'world' });
-    socket.on('my other event', function (data) {
-        console.log(data);
-    });
 
+// io.on('connection', function (socket) {
+//     var msgArr = null
+//     socket.emit('news', { hello: 'world' });
+//     socket.on('my other event', function (data) {
+//         console.log(data);
+//     });
+// });
+
+const myRoom = io.of('/my-room')
+myRoom.on('connection', function (socket) {
+    var msgArr = []
     socket.on('sendMsg', function (data) {
-        socket.emit('acceptMsg', data)  
+        msgArr.push(data)
+        socket.emit('acceptMsg', msgArr)  
     });
-        
-  
 });
+
 
