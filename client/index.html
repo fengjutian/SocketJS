@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./socket.io_client.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id='app'>
+        <div>
+           <textarea id='textarea' rows="3" cols="20"></textarea>
+           <button id='btn'>click</button>
+        </div>
+    </div>
+
+    <script>
+
+    var socket = io('http://localhost');
+
+    socket.on('news', function (data) {
+        console.log(data);
+        socket.emit('my other event', { my: 'data' });
+    });
+
+    var btn = document.querySelector('#btn')
+    var textarea = document.getElementById('textarea')
+
+    console.log('btn', btn)
+    btn.addEventListener('click', function() {
+        console.log(2, textarea.value)
+        socket.emit('sendMsg', textarea.value)
+    })
+
+    socket.on('acceptMsg', function(data) {
+        console.log(88, data)
+        var _p = document.createElement('p')
+        _p.innerHTML = data
+        var app = document.querySelector('#app')
+        app.appendChild(_p)
+    })
+
+
+    // var app = new Vue({
+    //     el: '#app',
+    //     data: () => {
+    //         return {
+    //             msgList: [],
+    //             msgVal: null
+    //         }
+    //     },
+    //     created() {
+            
+    //     },
+    //     methods: {
+            
+    //     }
+    // })
+    </script>
+</body>
+</html>
